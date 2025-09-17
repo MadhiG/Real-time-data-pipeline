@@ -1,7 +1,7 @@
-yfinance==0.2.28
-pandas==2.2.3
-requests==2.31.0
-sqlalchemy==2.0.21
-psycopg2-binary==2.9.7
-streamlit==1.29.0
-python-dotenv==1.0.0
+yfinance
+pandas
+requests
+sqlalchemy
+psycopg2-binary
+streamlit
+python-dotenv
