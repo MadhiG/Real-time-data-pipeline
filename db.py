@@ -1,42 +1,42 @@
 # db.py
-"""Database helper: supports SQLite (default) or PostgreSQL via DB_URL env variable."""
+"""Database helper: works with SQLite (default) or PostgreSQL via DB_URL env variable."""
 
 import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 import pandas as pd
 
-DB_URL = os.getenv("DB_URL", "sqlite:///data.db")  # default SQLite file: data.db
+# Default to SQLite if DB_URL not provided
+DB_URL = os.getenv("DB_URL", "sqlite:///data.db")
 
 def get_engine() -> Engine:
-    engine = create_engine(DB_URL, future=True)
-    return engine
+    return create_engine(DB_URL, future=True)
 
 def init_db():
     engine = get_engine()
     with engine.begin() as conn:
-        # stock table
+        # Stocks table
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS stocks (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             symbol TEXT NOT NULL,
             timestamp TIMESTAMP NOT NULL,
-            open NUMERIC,
-            high NUMERIC,
-            low NUMERIC,
-            close NUMERIC,
-            volume NUMERIC
+            open REAL,
+            high REAL,
+            low REAL,
+            close REAL,
+            volume REAL
         );
         """))
-        # weather table
+        # Weather table
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS weather (
-            id SERIAL PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             location TEXT NOT NULL,
             timestamp TIMESTAMP NOT NULL,
-            temperature NUMERIC,
-            windspeed NUMERIC,
-            precipitation NUMERIC
+            temperature REAL,
+            windspeed REAL,
+            precipitation REAL
         );
         """))
     print("Initialized DB (tables created if not exists).")
